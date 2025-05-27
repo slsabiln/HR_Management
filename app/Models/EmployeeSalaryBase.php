@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EmployeeSalaryBase extends Model
 {
-    
+    use HasFactory;
 
     protected $table = 'employee_salary_base';
 
