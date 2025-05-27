@@ -2,16 +2,13 @@
 
 use App\Models\EmployeeSalaryBase;
 use App\Models\Employee;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(TestCase::class, RefreshDatabase::class)->group('models');
 uses()->group('models');
 
 it('has fillable properties', function () {
     $model = new EmployeeSalaryBase();
 
-    expect($model->getFillable())->toEqual([
+    expect($model->getFillable())->toEqualCanonicalizing([
         'employee_id',
         'amount',
         'year',

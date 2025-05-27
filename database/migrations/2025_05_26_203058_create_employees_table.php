@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->string('department')->nullable();
             $table->timestamps();
         });
+
+        
     }
 
     public function down(): void

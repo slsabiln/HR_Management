@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(Tests\TestCase::class);
 
 it('has all expected columns in employees table', function () {
     expect(Schema::hasTable('employees'))->toBeTrue();

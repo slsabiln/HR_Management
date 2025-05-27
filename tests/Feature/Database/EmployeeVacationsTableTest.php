@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-uses(Tests\TestCase::class);
-
 it('has employee_vacations table with all expected columns and foreign key', function () {
     // تأكد من وجود الجدول
     expect(Schema::hasTable('employee_vacations'))->toBeTrue();

@@ -2,10 +2,7 @@
 
 use App\Models\EmployeeVacation;
 use App\Models\Employee;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(TestCase::class, RefreshDatabase::class)->group('models');
 
 uses()->group('models');
 

@@ -3,8 +3,12 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use Illuminate\Validation\ValidationException;
 class Employee extends Model
 {
+    use HasFactory;
     protected $fillable = [
     'code',
     'first_name',
@@ -17,6 +21,21 @@ class Employee extends Model
     'department',
 ];
 
+ protected static function booted()
+    {
+        static::saving(function ($employee) {
+            // تحقق من أن الكود فريد (ليس موجود في موظف آخر)
+            $exists = self::where('code', $employee->code)
+                ->where('id', '!=', $employee->id ?? 0)
+                ->exists();
+
+            if ($exists) {
+                throw ValidationException::withMessages([
+                    'code' => 'This employee code is already taken.',
+                ]);
+            }
+        });
+    }
  public function vacations(): HasMany
     {
         return $this->hasMany(EmployeeVacation::class);
@@ -33,4 +52,15 @@ class Employee extends Model
     {
         return $this->hasMany(EmployeeSalaryBase::class);
     }
+
+    public function managers()
+{
+    return $this->belongsToMany(Employee::class, 'employees_managers', 'employee_id', 'manager_id');
+}
+
+public function addedRecord()
+{
+    return $this->hasOne(EmployeeAdded::class);
+}
+
 }

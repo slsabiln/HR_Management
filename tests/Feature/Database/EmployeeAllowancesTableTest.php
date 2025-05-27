@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\Feature\Feature\Database;
+namespace Tests\Feature\Database;
 
 use Illuminate\Support\Facades\Schema;
-use Tests\TestCase;
 
-uses(TestCase::class);
 
 it('has all expected columns in employee_allowances table', function () {
     expect(Schema::hasTable('employee_allowances'))->toBeTrue();

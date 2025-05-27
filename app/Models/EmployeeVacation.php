@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class EmployeeVacation extends Model
 {
-    use SoftDeletes;
+     use HasFactory, SoftDeletes;
 
     protected $table = 'employee_vacations';
 
@@ -20,5 +21,28 @@ class EmployeeVacation extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // قبل إنشاء سجل جديد
+        static::creating(function ($vacation) {
+            if ($vacation->opening_vacations_count < 0 || $vacation->used_vacations_count < 0) {
+                throw ValidationException::withMessages([
+                    'vacations_count' => 'Vacation days cannot be negative.',
+                ]);
+            }
+        });
+
+        // قبل تحديث سجل موجود
+        static::updating(function ($vacation) {
+            if ($vacation->opening_vacations_count < 0 || $vacation->used_vacations_count < 0) {
+                throw ValidationException::withMessages([
+                    'vacations_count' => 'Vacation days cannot be negative.',
+                ]);
+            }
+        });
     }
 }

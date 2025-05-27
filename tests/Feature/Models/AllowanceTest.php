@@ -2,10 +2,7 @@
 
 use App\Models\EmployeeAllowance;
 use App\Models\Employee;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(TestCase::class, RefreshDatabase::class)->group('models');
 uses()->group('models');
 
 it('has fillable properties', function () {
