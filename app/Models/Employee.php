@@ -21,6 +21,10 @@ class Employee extends Model
     'department',
 ];
 
+protected $casts = [
+    'hire_date' => 'date',
+    'birth_date' => 'date',
+];
  protected static function booted()
     {
         static::saving(function ($employee) {

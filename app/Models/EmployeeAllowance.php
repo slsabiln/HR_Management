@@ -12,7 +12,7 @@ class EmployeeAllowance extends Model
 
     protected $fillable = [
         'employee_id',
-        'allowance_type',
+        'type',
         'amount',
         'start_date',
         'end_date',

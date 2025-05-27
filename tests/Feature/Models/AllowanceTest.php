@@ -10,7 +10,7 @@ it('has fillable properties', function () {
 
     expect($model->getFillable())->toEqual([
         'employee_id',
-        'allowance_type',
+        'type',
         'amount',
         'start_date',
         'end_date',
