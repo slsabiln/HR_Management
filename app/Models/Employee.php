@@ -73,4 +73,30 @@ class Employee extends Model
     {
         return $this->hasMany(EmployeeAddition::class);
     }
+
+    public function getSalaryForMonth(int $year, int $month)
+{
+    $base = $this->salaryBases()
+        ->where('year', $year)
+        ->where('month', $month)
+        ->first();
+
+    $allowancesTotal = $this->allowances()
+        ->where('start_date', '<=', now()->endOfMonth())
+        ->where(function ($query) use ($month, $year) {
+            $query->whereNull('end_date')
+                  ->orWhere('end_date', '>=', now()->startOfMonth());
+        })
+        ->sum('amount');
+
+    if (!$base) {
+        return null; 
+    }
+
+    return [
+        'base_salary' => $base->amount,
+        'allowances_total' => $allowancesTotal,
+    ];
+}
+
 }
