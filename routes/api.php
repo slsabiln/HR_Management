@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +13,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search');
+Route::get('/employees/{employee}/salary', [EmployeeController::class, 'salary']);
+
+// Standard RESTful routes
 Route::apiResource('employees', EmployeeController::class);
 Route::apiResource('employee-vacations', EmployeeVacationController::class);
 Route::apiResource('employee-allowances', EmployeeAllowanceController::class);

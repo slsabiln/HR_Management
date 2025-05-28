@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
+use App\Models\EmployeeSalaryBase;
 class EmployeeController extends Controller
 {
     // List all employees
@@ -86,4 +86,37 @@ class EmployeeController extends Controller
 
         return response()->json(['data' => $employees], 200);
     }
+
+
+   public function salary(Employee $employee, Request $request)
+{
+    // السنة والشهر الحالي (تقدر تغيرهم حسب متطلباتك)
+    $year = now()->year;
+    $month = now()->month;
+
+    // جلب الراتب الأساسي من جدول employee_salary_base
+    $baseSalaryRecord = EmployeeSalaryBase::where('employee_id', $employee->id)
+        ->where('year', $year)
+        ->where('month', $month)
+        ->first();
+
+    $base_salary = $baseSalaryRecord ? $baseSalaryRecord->amount : 0;
+
+    // جلب مجموع البدلات (Allowances)
+    $total_allowances = $employee->allowances()->sum('amount');
+
+    // جلب مجموع الإضافات (Additions) من جدول employee_additions
+    $total_additions = $employee->additions()->sum('amount');
+
+    // حساب الراتب الكلي
+    $total_salary = $base_salary + $total_allowances + $total_additions;
+
+    return response()->json([
+        'base_salary' => $base_salary,
+        'total_allowances' => $total_allowances,
+        'total_additions' => $total_additions,
+        'total_salary' => $total_salary,
+    ]);
+}
+
 }
