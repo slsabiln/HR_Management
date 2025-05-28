@@ -70,16 +70,20 @@ class EmployeeController extends Controller
     }
 
     public function search(Request $request)
-{
-    $search = $request->query('search');
+    {
+        $query = $request->input('query');
 
-    $employees = Employee::query()
-        ->where('full_name', 'like', "%{$search}%")
-        ->orWhere('code', 'like', "%{$search}%")
-        ->orWhere('email', 'like', "%{$search}%")
-        ->get();
+        // لو ما في كلمة بحث رجع الكل أو صفراً
+        if (!$query) {
+            return response()->json(['data' => []], 200);
+        }
 
-    return response()->json(['data' => $employees]);
-}
+        $employees = Employee::where('first_name', 'like', "%{$query}%")
+            ->orWhere('last_name', 'like', "%{$query}%")
+            ->orWhere('code', 'like', "%{$query}%")
+            ->orWhere('email', 'like', "%{$query}%")
+            ->get();
 
+        return response()->json(['data' => $employees], 200);
+    }
 }
